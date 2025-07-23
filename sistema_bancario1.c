@@ -85,13 +85,13 @@ int main() {
     int opcao;
     // Loop principal do menu. Continua executando até que o usuário escolha a opção 0
     do {
-        printf("\n===== SIMULADOR DE SISTEMA BANCARIO =====\n");
+        printf("\n===== SIMULADOR DE SISTEMA BANCÁRIO =====\n");
         printf("1. Cadastrar Novo Cliente\n");        //
         printf("2. Realizar Transação\n");            //
         printf("3. Consultar Saldo / Extrato\n");    //
         printf("0. Sair do Programa\n");
         printf("=========================================\n");
-        printf("Escolha uma opcao: ");
+        printf("Escolha uma opção: ");
         scanf("%d", &opcao);
         limparBuffer(); // Limpa o buffer
 
@@ -110,7 +110,7 @@ int main() {
                 printf("Saindo do programa. Salvando dados...\n");
                 break;
             default:
-                printf("Opcao invalida! Tente novamente.\n");
+                printf("Opção inválida! Tente novamente.\n");
         }
 
         // Pausa o sistema após cada operação (exceto ao sair) para que o usuário possa ler a saída
@@ -123,7 +123,7 @@ int main() {
     // Antes de encerrar, salva todos os dados no arquivo e libera a memória alocada
     salvarDados();
     liberarMemoria();
-    printf("Dados salvos com sucesso. Ate logo!\n");
+    printf("Dados salvos com sucesso. Até logo!\n");
 
     return 0;
 }
@@ -254,7 +254,7 @@ void cadastrarCliente() {
 
     //verificando se o CPF já existe 
     if (buscarClientePorCPF(cpf_temp) != NULL) {
-        printf("Erro: CPF ja cadastrado no sistema.\n");
+        printf("Erro: CPF já cadastrado no sistema.\n");
         return;
     }
     
@@ -266,7 +266,7 @@ void cadastrarCliente() {
     Cliente* novoCliente = &g_clientes[g_num_clientes - 1];
     strcpy(novoCliente->cpf, cpf_temp);
 
-    printf("Digite o nome completo (ate 49 caracteres): ");
+    printf("Digite o nome completo (até 49 caracteres): ");
     fgets(novoCliente->nomeCompleto, 50, stdin);
     // Remove o '\n' do fgets 
     novoCliente->nomeCompleto[strcspn(novoCliente->nomeCompleto, "\n")] = 0;
@@ -275,16 +275,16 @@ void cadastrarCliente() {
     scanf("%d", &novoCliente->idade);
     limparBuffer();
     
-    printf("\n--- Cadastro da Conta Bancaria ---\n");
+    printf("\n--- Cadastro da Conta Bancária ---\n");
     // Aloca memória para a primeira conta do cliente
     novoCliente->num_contas = 1;
     novoCliente->contas = (Conta*)malloc(sizeof(Conta));
     
-    printf("Digite o numero da agencia: ");
+    printf("Digite o número da agência: ");
     scanf("%d", &novoCliente->contas[0].agencia);
     limparBuffer();
     
-    printf("Digite o numero da conta: ");
+    printf("Digite o número da conta: ");
     scanf("%d", &novoCliente->contas[0].numero);
     limparBuffer();
     
@@ -335,7 +335,7 @@ void adicionarTransacao(Conta* conta, TipoTransacao tipo, double valor) {
 void realizarTransacao() {
     char cpf[12];
     int numConta;
-    printf("\n--- Realizar Transacao ---\n");
+    printf("\n--- Realizar Transação ---\n");
     printf("Digite o CPF do titular da conta: ");
     fgets(cpf, 12, stdin);
     limparBuffer();
@@ -343,15 +343,15 @@ void realizarTransacao() {
     // Localiza o cliente e a conta onde a operação será realizada
     Cliente* cliente = buscarClientePorCPF(cpf);
     if (cliente == NULL) {
-        printf("Erro: Cliente nao encontrado.\n");
+        printf("Erro: Cliente não encontrado.\n");
         return;
     }
-    printf("Digite o numero da conta: ");
+    printf("Digite o número da conta: ");
     scanf("%d", &numConta);
     limparBuffer();
     Conta* conta = buscarConta(cliente, numConta);
     if (conta == NULL) {
-        printf("Erro: Conta nao encontrada para este cliente.\n");
+        printf("Erro: Conta não encontrada para este cliente.\n");
         return;
     }
 
@@ -359,8 +359,8 @@ void realizarTransacao() {
     //loop que permite ao usuário fazer várias operações na mesma conta
     while (toupper(continuar) == 'S') {
         printf("\nConta de %s | Saldo Atual: R$ %.2f\n", cliente->nomeCompleto, conta->saldo);
-        printf("Escolha a transacao:\n1. Deposito\n2. Saque\n3. Transferencia / PIX\n");
-        printf("Escolha uma opcao: ");
+        printf("Escolha a transação:\n1. Depósito\n2. Saque\n3. Transferência / PIX\n");
+        printf("Escolha uma opção: ");
         int opcaoTransacao;
         scanf("%d", &opcaoTransacao);
         limparBuffer();
@@ -368,15 +368,15 @@ void realizarTransacao() {
         switch (opcaoTransacao) {
             case 1: { // Depósito
                 double valor;
-                printf("Digite o valor do deposito: ");
+                printf("Digite o valor do depósito: ");
                 scanf("%lf", &valor);
                 limparBuffer();
                 if (valor > 0) {
                     conta->saldo += valor;
                     adicionarTransacao(conta, DEPOSITO, valor);
-                    printf("Deposito realizado com sucesso!\n");
+                    printf("Depósito realizado com sucesso!\n");
                 } else {
-                    printf("Valor invalido!\n");
+                    printf("Valor inválido!\n");
                 }
                 break;
             }
@@ -390,7 +390,7 @@ void realizarTransacao() {
                     adicionarTransacao(conta, SAQUE, valor);
                     printf("Saque realizado com sucesso!\n");
                 } else {
-                    printf("Valor invalido ou saldo insuficiente!\n");
+                    printf("Valor inválido ou saldo insuficiente!\n");
                 }
                 break;
             }
@@ -401,20 +401,20 @@ void realizarTransacao() {
                 limparBuffer();
                 Cliente* cliente_dest = buscarClientePorCPF(cpf_dest);
                 if (cliente_dest == NULL) {
-                    printf("Erro: CPF de destino nao encontrado!\n");
+                    printf("Erro: CPF de destino não encontrado!\n");
                     break;
                 }
                 int numConta_dest;
-                printf("Digite o numero da conta de destino: ");
+                printf("Digite o número da conta de destino: ");
                 scanf("%d", &numConta_dest);
                 limparBuffer();
                 Conta* conta_dest = buscarConta(cliente_dest, numConta_dest);
                 if (conta_dest == NULL) {
-                    printf("Erro: Conta de destino nao encontrada!\n");
+                    printf("Erro: Conta de destino não encontrada!\n");
                     break;
                 }
                 double valor;
-                printf("Digite o valor da transferencia: ");
+                printf("Digite o valor da transferência: ");
                 scanf("%lf", &valor);
                 limparBuffer();
                 if (valor > 0 && valor <= conta->saldo) {
@@ -422,17 +422,17 @@ void realizarTransacao() {
                     conta_dest->saldo += valor;
                     adicionarTransacao(conta, TRANSFERENCIA, valor);
                     adicionarTransacao(conta_dest, PIX, valor);
-                    printf("Transferencia realizada com sucesso!\n");
+                    printf("Transferência realizada com sucesso!\n");
                 } else {
-                    printf("Valor invalido ou saldo insuficiente!\n");
+                    printf("Valor inválido ou saldo insuficiente!\n");
                 }
                 break;
             }
             default:
-                printf("Opcao invalida!\n");
+                printf("Opção inválida!\n");
         }
         //pergunta ao usuário se deseja continuar realizando operações
-        printf("\nDeseja fazer nova operacao nesta conta? (S/N): ");
+        printf("\nDeseja fazer nova operação nesta conta? (S/N): ");
         scanf(" %c", &continuar);
         limparBuffer();
     }
@@ -449,22 +449,22 @@ void consultarConta() {
 
     Cliente* cliente = buscarClientePorCPF(cpf);
     if (cliente == NULL) {
-        printf("Erro: Cliente nao encontrado.\n");
+        printf("Erro: Cliente não encontrado.\n");
         return;
     }
-    printf("Digite o numero da conta: ");
+    printf("Digite o número da conta: ");
     scanf("%d", &numConta);
     limparBuffer();
     Conta* conta = buscarConta(cliente, numConta);
     if (conta == NULL) {
-        printf("Erro: Conta nao encontrada.\n");
+        printf("Erro: Conta não encontrada.\n");
         return;
     }
 
     // Exibe as informações principais da conta
     printf("\n--- DADOS DA CONTA ---\n");
     printf("Titular: %s\n", cliente->nomeCompleto);
-    printf("Agencia: %d | Conta: %d\n", conta->agencia, conta->numero);
+    printf("Agência: %d | Conta: %d\n", conta->agencia, conta->numero);
     printf("SALDO ATUAL: R$ %.2f\n", conta->saldo);
     
     char verExtrato;
@@ -476,7 +476,7 @@ void consultarConta() {
     if (toupper(verExtrato) == 'S') {
         printf("\n--- EXTRATO DETALHADO ---\n");
         if (conta->num_transacoes == 0) {
-            printf("Nenhuma transacao registrada.\n");
+            printf("Nenhuma transação registrada.\n");
         } else {
             int i;
             // Itera sobre o array de transações e imprime cada uma
@@ -484,13 +484,13 @@ void consultarConta() {
                 Transacao t = conta->transacoes[i];
                 switch (t.tipo) {
                     case DEPOSITO:
-                        printf("DEPOSITO      : + R$ %.2f\n", t.valor);
+                        printf("DEPÓSITO      : + R$ %.2f\n", t.valor);
                         break;
                     case SAQUE:
                         printf("SAQUE         : - R$ %.2f\n", t.valor);
                         break;
                     case TRANSFERENCIA:
-                        printf("TRANSFERENCIA : - R$ %.2f\n", t.valor);
+                        printf("TRANSFERÊNCIA : - R$ %.2f\n", t.valor);
                         break;
                     case PIX:
                         printf("PIX RECEBIDO  : + R$ %.2f\n", t.valor);
